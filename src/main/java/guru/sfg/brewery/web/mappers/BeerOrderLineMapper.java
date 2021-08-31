@@ -21,6 +21,7 @@ import guru.sfg.brewery.domain.BeerOrderLine;
 import guru.sfg.brewery.web.model.BeerOrderLineDto;
 import org.mapstruct.DecoratedWith;
 import org.mapstruct.Mapper;
+import org.springframework.stereotype.Component;
 
 @Mapper(uses = {DateMapper.class})
 @DecoratedWith(BeerOrderLineMapperDecorator.class)

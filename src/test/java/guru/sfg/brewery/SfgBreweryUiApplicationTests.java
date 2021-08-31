@@ -24,9 +24,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 public class SfgBreweryUiApplicationTests {
 
-    @Test
-    public void contextLoads() {
-    }
+//    @Test
+//    public void contextLoads() {
+//    }
 
 }
 
