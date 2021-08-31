@@ -43,14 +43,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 UsernamePasswordAuthenticationFilter.class);
 
         http.authorizeRequests(authorize -> {
-                    authorize
-                            .antMatchers("/h2-console/**").permitAll() //do not use in prod
-                            .antMatchers("/", "/webjars/**", "/login", "/resources/**").permitAll()
-                            .antMatchers("/beers/find", "/beers*").permitAll()
-                            .antMatchers(HttpMethod.GET, "/api/v1/beer/**").permitAll()
-                            .mvcMatchers(HttpMethod.DELETE, "/api/v1/beer/**").hasRole("ADMIN")
-                            .mvcMatchers(HttpMethod.GET, "/api/v1/beerUpc/{upc}").permitAll();
-                })
+            authorize
+                    .antMatchers("/h2-console/**").permitAll() //do not use in prod
+                    .antMatchers("/", "/webjars/**", "/login", "/resources/**").permitAll()
+                    .antMatchers("/beers/find", "/beers*").permitAll()
+                    .antMatchers(HttpMethod.GET, "/api/v1/beer/**").permitAll()
+                    .mvcMatchers(HttpMethod.DELETE, "/api/v1/beer/**").hasRole("ADMIN")
+                    .mvcMatchers(HttpMethod.GET, "/api/v1/beerUpc/{upc}").permitAll()
+                    .mvcMatchers("/brewery/breweries")
+                    .hasAnyRole("ADMIN", "CUSTOMER")
+                    .mvcMatchers(HttpMethod.GET, "/brewery/api/v1/breweries")
+                    .hasAnyRole("ADMIN", "CUSTOMER");
+        })
                 .authorizeRequests()
                 .anyRequest().authenticated()
                 .and()
