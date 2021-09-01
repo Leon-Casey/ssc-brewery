@@ -17,6 +17,7 @@
 
 package guru.sfg.brewery.web.controllers.api;
 
+import guru.sfg.brewery.security.perms.BeerOrderReadPermission;
 import guru.sfg.brewery.services.BeerOrderService;
 import guru.sfg.brewery.web.model.BeerOrderDto;
 import guru.sfg.brewery.web.model.BeerOrderPagedList;
@@ -42,12 +43,13 @@ public class BeerOrderController {
         this.beerOrderService = beerOrderService;
     }
 
+    @BeerOrderReadPermission
     @GetMapping("orders")
     public BeerOrderPagedList listOrders(@PathVariable("customerId") UUID customerId,
                                          @RequestParam(value = "pageNumber", required = false) Integer pageNumber,
-                                         @RequestParam(value = "pageSize", required = false) Integer pageSize){
+                                         @RequestParam(value = "pageSize", required = false) Integer pageSize) {
 
-        if (pageNumber == null || pageNumber < 0){
+        if (pageNumber == null || pageNumber < 0) {
             pageNumber = DEFAULT_PAGE_NUMBER;
         }
 
@@ -60,18 +62,19 @@ public class BeerOrderController {
 
     @PostMapping("orders")
     @ResponseStatus(HttpStatus.CREATED)
-    public BeerOrderDto placeOrder(@PathVariable("customerId") UUID customerId, @RequestBody BeerOrderDto beerOrderDto){
+    public BeerOrderDto placeOrder(@PathVariable("customerId") UUID customerId, @RequestBody BeerOrderDto beerOrderDto) {
         return beerOrderService.placeOrder(customerId, beerOrderDto);
     }
 
+    @BeerOrderReadPermission
     @GetMapping("orders/{orderId}")
-    public BeerOrderDto getOrder(@PathVariable("customerId") UUID customerId, @PathVariable("orderId") UUID orderId){
+    public BeerOrderDto getOrder(@PathVariable("customerId") UUID customerId, @PathVariable("orderId") UUID orderId) {
         return beerOrderService.getOrderById(customerId, orderId);
     }
 
     @PutMapping("/orders/{orderId}/pickup")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void pickupOrder(@PathVariable("customerId") UUID customerId, @PathVariable("orderId") UUID orderId){
+    public void pickupOrder(@PathVariable("customerId") UUID customerId, @PathVariable("orderId") UUID orderId) {
         beerOrderService.pickupOrder(customerId, orderId);
     }
 }
